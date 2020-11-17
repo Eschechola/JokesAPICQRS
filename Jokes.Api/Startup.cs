@@ -1,16 +1,16 @@
+using AutoMapper;
+using Jokes.Domain.Entities;
+using Jokes.Infra.Context;
+using Jokes.Infra.Interfaces;
+using Jokes.Infra.Repositories;
+using Jokes.Services.Commands.Requests;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Jokes.Api
 {
@@ -28,10 +28,28 @@ namespace Jokes.Api
         {
 
             services.AddControllers();
+
+            services.AddSingleton<IConfiguration>(di => Configuration);
+
+            services.AddScoped<IJokesRepository, JokeRepository>();
+
+            services.AddScoped<IContext, JokeContext>();
+
+            services.AddMediatR(typeof(CreateJokeRequest));
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Jokes.Api", Version = "v1" });
             });
+
+            var autoMapperConfig = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<Joke, CreateJokeRequest>().ReverseMap();
+                cfg.CreateMap<Joke, UpdateJokeRequest>().ReverseMap();
+            });
+
+            services.AddSingleton(autoMapperConfig.CreateMapper());
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

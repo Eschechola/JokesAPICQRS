@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Jokes.Services.Queries.Responses
 {
-    class GetJokeResponse
+    public class GetJokeResponse
     {
+        public string Id { get; set; }
+        public string Text { get; set; }
+        public string Response { get; set; }
     }
 }

@@ -4,15 +4,15 @@ namespace Jokes.Domain.Entities
 {
     public class Joke
     {
-        public Guid Id { get; private set; }
-        public string Text { get; private set; }
-        public string Response { get; private set; }
+        public string Id { get; set; }
+        public string Text { get; set; }
+        public string Response { get; set; }
 
         public Joke(){}
 
         public Joke(string text, string response)
         {
-            Id = Guid.NewGuid();
+            Id = Guid.NewGuid().ToString();
             Text = text;
             Response = response;
         }

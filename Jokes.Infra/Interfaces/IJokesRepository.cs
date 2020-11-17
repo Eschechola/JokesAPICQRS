@@ -9,8 +9,8 @@ namespace Jokes.Infra.Interfaces
     {
         Task<Joke> Create(Joke joke);
         Task<Joke> Update(Joke joke);
-        Task<Joke> Get(Guid id);
+        Task<Joke> Get(string id);
         Task<IList<Joke>> Get();
-        Task Remove(Guid id);
+        Task Remove(string id);
     }
 }

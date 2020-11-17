@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using MediatR;
+using Jokes.Services.Queries.Responses;
 
 namespace Jokes.Services.Queries.Requests
 {
-    class GetJokeRequest
+    public class GetJokeRequest : IRequest<GetJokeResponse>
     {
+        public string Id { get; set; }
     }
 }

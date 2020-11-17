@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using MediatR;
+using Jokes.Services.Commands.Responses;
 
 namespace Jokes.Services.Commands.Requests
 {
-    class RemoveJokeRequest
+    public class RemoveJokeRequest : IRequest<RemoveJokeResponse>
     {
+        public string Id { get; set; }
     }
 }

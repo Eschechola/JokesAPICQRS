@@ -1,12 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Jokes.Services.Commands.Responses;
+using MediatR;
+using System;
 
 namespace Jokes.Services.Commands.Requests
 {
-    class UpdateJokeRequest
+    public class UpdateJokeRequest : IRequest<UpdateJokeResponse>
     {
+        public string Id { get; set; }
+        public string Text { get; set; }
+        public string Response { get; set; }
+
     }
 }

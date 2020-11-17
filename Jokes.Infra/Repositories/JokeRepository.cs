@@ -11,18 +11,16 @@ namespace Jokes.Infra.Repositories
 {
     public class JokeRepository : IJokesRepository
     {
-        private readonly IContext _readContext;
-        private readonly IContext _writeContext;
+        private readonly IContext _jokeContext;
 
-        public JokeRepository(ReadContext readContext, WriteContext writeContext)
+        public JokeRepository(IContext jokeContext)
         {
-            _readContext = readContext;
-            _writeContext = writeContext;
+            _jokeContext = jokeContext;
         }
 
         public async Task<Joke> Create(Joke joke)
         {
-            using (var connection = _writeContext.GetConnection())
+            using (var connection = _jokeContext.GetConnection())
             {
                 connection.Open();
 
@@ -49,7 +47,7 @@ namespace Jokes.Infra.Repositories
 
         public async Task<Joke> Update(Joke joke)
         {
-            using (var connection = _writeContext.GetConnection())
+            using (var connection = _jokeContext.GetConnection())
             {
                 connection.Open();
 
@@ -75,9 +73,9 @@ namespace Jokes.Infra.Repositories
             return await Get(joke.Id);
         }
 
-        public async Task<Joke> Get(Guid id)
+        public async Task<Joke> Get(string id)
         {
-            using (var connection = _readContext.GetConnection())
+            using (var connection = _jokeContext.GetConnection())
             {
                 connection.Open();
 
@@ -98,7 +96,7 @@ namespace Jokes.Infra.Repositories
 
         public async Task<IList<Joke>> Get()
         {
-            using (var connection = _readContext.GetConnection())
+            using (var connection = _jokeContext.GetConnection())
             {
                 connection.Open();
 
@@ -106,15 +104,15 @@ namespace Jokes.Infra.Repositories
                                 SELECT * FROM [dbo].[Jokes]
                             ";
 
-                var jokes = await connection.QueryAsync<IList<Joke>>(query);
+                var jokes = await connection.QueryAsync<Joke>(query);
 
-                return jokes.FirstOrDefault();
+                return jokes.ToList();
             }
         }
 
-        public async Task Remove(Guid id)
+        public async Task Remove(string id)
         {
-            using (var connection = _readContext.GetConnection())
+            using (var connection = _jokeContext.GetConnection())
             {
                 connection.Open();
 
@@ -122,7 +120,7 @@ namespace Jokes.Infra.Repositories
                 parameters.Add("@Id", id);
 
                 var query = @"
-                                DELETE * FROM [dbo].[Jokes]
+                                DELETE FROM [dbo].[Jokes]
                                 WHERE Id = @Id;
                             ";
 

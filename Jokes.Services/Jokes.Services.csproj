@@ -5,7 +5,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="10.1.1" />
     <PackageReference Include="MediatR" Version="9.0.0" />
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Jokes.Domain\Jokes.Domain.csproj" />
+    <ProjectReference Include="..\Jokes.Infra\Jokes.Infra.csproj" />
+  </ItemGroup>
+  
 
 </Project>
