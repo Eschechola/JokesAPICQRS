@@ -1,8 +1,6 @@
-﻿using System;
-
-namespace Jokes.Services.Queries.Responses
+﻿namespace Jokes.Services.Queries.DTO
 {
-    public class GetJokeResponse
+    public class JokeDTO
     {
         public string Id { get; set; }
         public string Text { get; set; }

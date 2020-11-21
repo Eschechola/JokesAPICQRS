@@ -3,7 +3,7 @@ using MediatR;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Jokes.Services.Commands.Requests;
-using Jokes.Services.Queries.Requests;
+using Jokes.Services.Queries.Interfaces;
 
 namespace Jokes.Api.Controllers
 {
@@ -11,10 +11,12 @@ namespace Jokes.Api.Controllers
     public class JokesController : ControllerBase
     {
         private readonly IMediator _mediator;
+        private readonly IJokeQueries _jokeQueries;
 
-        public JokesController(IMediator mediator)
+        public JokesController(IMediator mediator, IJokeQueries jokeQueries)
         {
             _mediator = mediator;
+            _jokeQueries = jokeQueries;
         }
 
         [HttpPost]
@@ -65,12 +67,7 @@ namespace Jokes.Api.Controllers
         {
             try
             {
-                var getRequest = new GetJokeRequest
-                {
-                    Id = id
-                };
-
-                return Ok(await _mediator.Send(getRequest));
+                return Ok(await _jokeQueries.Get(id));
             }
             catch (Exception ex)
             {
@@ -84,9 +81,7 @@ namespace Jokes.Api.Controllers
         {
             try
             {
-                var getRequest = new GetAllJokesRequests();
-
-                return Ok(await _mediator.Send(getRequest));
+                return Ok(await _jokeQueries.Get());
             }
             catch (Exception ex)
             {

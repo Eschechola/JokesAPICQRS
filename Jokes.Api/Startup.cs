@@ -1,16 +1,19 @@
+using MediatR;
 using AutoMapper;
-using Jokes.Domain.Entities;
 using Jokes.Infra.Context;
+using Jokes.Domain.Entities;
 using Jokes.Infra.Interfaces;
 using Jokes.Infra.Repositories;
-using Jokes.Services.Commands.Requests;
-using MediatR;
+using Jokes.Services.Queries;
+using Microsoft.OpenApi.Models;
+using Jokes.Services.Queries.DTO;
+using Jokes.Services.Queries.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Jokes.Services.Commands.Requests;
 using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models;
 
 namespace Jokes.Api
 {
@@ -23,13 +26,14 @@ namespace Jokes.Api
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
 
             services.AddControllers();
 
             services.AddSingleton<IConfiguration>(di => Configuration);
+
+            services.AddScoped<IJokeQueries, JokeQueries>();
 
             services.AddScoped<IJokesRepository, JokeRepository>();
 
@@ -44,6 +48,7 @@ namespace Jokes.Api
 
             var autoMapperConfig = new MapperConfiguration(cfg =>
             {
+                cfg.CreateMap<Joke, JokeDTO>().ReverseMap();
                 cfg.CreateMap<Joke, CreateJokeRequest>().ReverseMap();
                 cfg.CreateMap<Joke, UpdateJokeRequest>().ReverseMap();
             });
@@ -52,7 +57,6 @@ namespace Jokes.Api
 
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
