@@ -14,6 +14,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Jokes.Services.Commands.Requests;
 using Microsoft.Extensions.Hosting;
+using Jokes.Services.Handlers;
 
 namespace Jokes.Api
 {
@@ -39,7 +40,7 @@ namespace Jokes.Api
 
             services.AddScoped<IContext, JokeContext>();
 
-            services.AddMediatR(typeof(CreateJokeRequest));
+            services.AddMediatR(typeof(JokeHandler));
 
             services.AddSwaggerGen(c =>
             {

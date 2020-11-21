@@ -48,11 +48,16 @@ namespace Jokes.Api.Controllers
         }
 
         [HttpDelete]
-        [Route("/api/v1/jokes/remove")]
-        public async Task<IActionResult> Remove([FromBody] RemoveJokeRequest removeJokeRequest)
+        [Route("/api/v1/jokes/remove/{id}")]
+        public async Task<IActionResult> Remove(string id)
         {
             try
             {
+                var removeJokeRequest = new RemoveJokeRequest
+                {
+                    Id = id
+                };
+
                 return Ok(await _mediator.Send(removeJokeRequest));
             }
             catch (Exception ex)
